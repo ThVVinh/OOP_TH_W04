@@ -2,30 +2,55 @@
 
 using namespace std;
 
-class CDate
+class Date
 {
-    int _CDate;
-    int _month;
-    int _year;
+    int date;
+    int month;
+    int year;
 
 public:
-    CDate(): _CDate(1), _month(1), _year(2023){}
+    Date(): date(1), month(1), year(2023){}
+    constexpr Date(int _date, int _month, int _year):date(_date), month(_month), year(_year){}
+    Date(int _year);
+    Date(int _year, int _month): year(_year), month(_month){}
+    Date(int _year, int _month, int _date): year(_year), month(_month), date(_date){}
+    Date(const Date& other){date = other.date; month = other.month; year = other.year;}
 
     bool isLeapYear();
 
-    constexpr CDate(int CDate, int month, int year):_CDate(CDate), _month(month), _year(year){}
-
     int dayInMonth();
 
-    friend ostream& operator<< (ostream& outDevice, const CDate& d);
-    friend istream& operator>> (istream& inDevice, CDate& d);
+    friend ostream& operator<< (ostream& outDevice, const Date& d);
+    friend istream& operator>> (istream& inDevice, Date& d);
+    
+    bool operator==(const Date& other);
+    bool operator!=(const Date& other);
+    bool operator>=(const Date& other);
+    bool operator<=(const Date& other);
+    bool operator>(const Date& other);
+    bool operator<(const Date& other);
 
-    void set(int CDate, int month, int year);
+    Date operator+(int num);
+    Date& operator+=(int num);
+    Date operator-(int num);
+    Date& operator-=(int num);
 
-    CDate searchTomorrow();
-    CDate searchYesterday();
+    Date operator++(int num);
+    Date operator++();
 
-    int compare(const CDate other);
+    Date operator--(int num);
+    Date operator--();
 
-    int caculateNumOfDayBetween2Moment(const CDate other);
+    operator int() const;
+    operator long() const;
+
+
+    void set(int Date, int month, int year);
+
+    Date Tomorrow();
+    Date Yesterday();
+
+    int compare(const Date other);
+
+    int caculateNumOfDayBetween2Moment(const Date other);
 };
