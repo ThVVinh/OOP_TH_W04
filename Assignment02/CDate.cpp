@@ -1,100 +1,100 @@
 #include"CDate.h"
 
-bool CDate::isLeapYear()
+bool Date::isLeapYear()
 {
-    if(_year % 400 == 0 || (_year % 4 == 0 && _year % 100 != 0))
+    if(year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))
         return true;
 
     return false;
 }
 
-ostream& operator<< (ostream& outDevice, const CDate& d)
+ostream& operator<< (ostream& outDevice, const Date& d)
 {
-    outDevice << d._CDate << "/" << d._month << "/" << d._year << endl;
+    outDevice << d.date << "/" << d.month << "/" << d.year << endl;
 
     return outDevice;
 }
-istream& operator>> (istream& inDevice, CDate& d)
+istream& operator>> (istream& inDevice, Date& d)
 {
-    cout << "Enter CDate, month and year (dd/mm/yy): ";
+    cout << "Enter Date, month and year (dd/mm/yy): ";
 
     char slash = '/';
 
-    inDevice >> d._CDate >> slash >> d._month >> slash >> d._year;
+    inDevice >> d.date >> slash >> d.month >> slash >> d.year;
 
     return inDevice;
 }
 
-void CDate::set(int CDate, int month, int year)
+void Date::set(int Date, int month, int year)
 {
-    _CDate = CDate;
-    _month = month;
-    _year = year;
+    date = Date;
+    month = month;
+    year = year;
 }
 
-int CDate::dayInMonth()
+int Date::dayInMonth()
 {
-    if(_month == 1 || _month == 3 || _month == 5 || _month == 7 || _month == 8 || _month == 10 || _month == 12)
+    if(month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
         return 31;
-    else if(_month == 2 && isLeapYear())
+    else if(month == 2 && isLeapYear())
         return 29;
-    else if(_month == 2 && !isLeapYear())
+    else if(month == 2 && !isLeapYear())
         return 28;
     else return 30;
 }
 
-CDate CDate::searchTomorrow()
+Date Date::Tomorrow()
 {
-    if(_CDate >= dayInMonth())
+    if(date >= dayInMonth())
     {
-        CDate nextDay(1, _month + 1, _year);
+        Date nextDay(1, month + 1, year);
         
-        if(_month > 12)
+        if(month > 12)
         {
-            nextDay.set(1, 1, nextDay._year + 1);
+            nextDay.set(1, 1, nextDay.year + 1);
             return nextDay;
         }
 
         return nextDay;
     }
     
-    return CDate(_CDate + 1, _month, _year);
+    return Date(date + 1, month, year);
 }
 
-CDate CDate::searchYesterday()
+Date Date::Yesterday()
 {
-    if(_CDate <= 1)
+    if(date <= 1)
     {
-        CDate previousDay(30, _month - 1, _year);
+        Date previousDay(30, month - 1, year);
 
-        if(_month < 1)
+        if(month < 1)
         {
-            previousDay.set(30, 12, _year - 1);
+            previousDay.set(30, 12, year - 1);
         }
 
         return previousDay;
     }
 
-    return CDate(_CDate - 1, _month, _year);
+    return Date(date - 1, month, year);
 }
 
-int CDate::compare(const CDate other)
+int Date::compare(const Date other)
 {
     int flag;
 
-    if(_year > other._year)
+    if(year > other.year)
         flag = 1;
-    else if(_year < other._year)
+    else if(year < other.year)
         flag = -1;
     else{
-        if(_month > other._month)
+        if(month > other.month)
             flag = 1;
-        else if(_month < other._month)
+        else if(month < other.month)
             flag = -1;
         else{
-            if(_CDate > other._CDate)
+            if(date > other.date)
                 flag = 1;
-            else if(_CDate < other._CDate)
+            else if(date < other.date)
                 flag = -1;
             else flag = 0;
         }
@@ -110,17 +110,17 @@ int CDate::compare(const CDate other)
     return flag;
 }
 
-int CDate::caculateNumOfDayBetween2Moment(const CDate other)
+int Date::caculateNumOfDayBetween2Moment(const Date other)
 {
-    CDate temp = *this;
+    Date temp = *this;
 
     int day = 0;
 
     while(this->compare(other) != 0)
     {
         if(this->compare(other) < 0)
-            *this = searchTomorrow();
-        else *this = searchYesterday();
+            *this = Tomorrow();
+        else *this = Yesterday();
         
         day++;
     }
@@ -128,4 +128,84 @@ int CDate::caculateNumOfDayBetween2Moment(const CDate other)
     *this = temp;
 
     return day;
+}
+
+bool Date::operator==(const Date& other)
+{
+
+}
+
+bool Date::operator!=(const Date& other)
+{
+
+}
+
+bool Date::operator>=(const Date& other)
+{
+
+}
+
+bool Date::operator<=(const Date& other)
+{
+
+}
+
+bool Date::operator>(const Date& other)
+{
+
+}
+
+bool Date::operator<(const Date& other)
+{
+
+}
+
+Date Date::operator+(int num)
+{
+
+}
+
+Date& Date::operator+=(int num)
+{
+
+}
+
+Date Date::operator-(int num)
+{
+
+}
+
+Date& Date::operator-=(int num)
+{
+
+}
+
+Date Date::operator++(int num)
+{
+
+}
+
+Date Date::operator++()
+{
+
+}
+
+Date Date::operator--(int num)
+{
+
+}
+
+Date Date::operator--()
+{
+
+}
+
+Date::operator int() const
+{
+
+}
+
+Date::operator long() const
+{
+
 }
