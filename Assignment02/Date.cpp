@@ -1,4 +1,4 @@
-#include"CDate.h"
+#include"Date.h"
 
 bool isLeapYear(const int _year)
 {

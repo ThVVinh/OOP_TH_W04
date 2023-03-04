@@ -31,13 +31,14 @@ IntArray::IntArray(int _size, int _value)
     }
 }
 
-IntArray::IntArray(int _arr[], int _size)
+IntArray::IntArray(int _arr[], int _size): IntArray(_size)
 {
-    size = _size;
-    arr = _arr;
+
+    for(int i = 0; i < size; i++)
+        arr[i] = _arr[i];
 }
 
-IntArray::IntArray(IntArray& other)
+IntArray::IntArray(IntArray& other): IntArray()
 {
     *this = other;
 }
@@ -59,7 +60,7 @@ std::ostream& operator<< (std::ostream& outDevice, const IntArray& arr)
     if(arr.arr != NULL)
     {
         for(int i = 0; i < arr.size; i++)
-            outDevice << "arr[" << i << "] = " << arr.arr[i] << " ";
+            outDevice << "arr[" << i << "] = " << arr[i] << " ";
     }
 
     cout << endl;
@@ -68,12 +69,6 @@ std::ostream& operator<< (std::ostream& outDevice, const IntArray& arr)
 }
 std::istream& operator>> (std::istream& inDevice, IntArray& arr)
 {
-    cout << "Enter size: ";
-    
-    inDevice >> arr.size;
-
-    arr.arr = new int[arr.size];
-
     for(int i = 0; i < arr.size; i++)
     {
         cout << "arr[" << i << "] = ";
@@ -88,7 +83,7 @@ void IntArray::display()
     if(arr != NULL)
     {
         for(int i = 0; i < size; i++)
-            cout << "arr[" << i << "] = " <<arr[i] << ", ";
+            cout << "arr[" << i << "] = " << arr[i] << ", ";
     }
 
     cout << endl;
@@ -114,6 +109,8 @@ IntArray& IntArray::operator=(IntArray& other)
 
     for(int i = 0; i < size; i++)
         arr[i] = other[i];
+
+    return *this;
 }
 
 IntArray::operator int() const
