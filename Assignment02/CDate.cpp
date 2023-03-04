@@ -110,7 +110,7 @@ int Date::compare(const Date other)
     return flag;
 }
 
-int Date::caculateNumOfDayBetween2Moment(const Date other)
+int Date::calcNumOfDayBetween2Moment(const Date other)
 {
     Date temp = *this;
 
@@ -132,80 +132,99 @@ int Date::caculateNumOfDayBetween2Moment(const Date other)
 
 bool Date::operator==(const Date& other)
 {
-
+    return (date == other.date && month == other.month && year == other.year);
 }
 
 bool Date::operator!=(const Date& other)
 {
+    return (date != other.date || month != other.month || year != other.year);
 
 }
 
 bool Date::operator>=(const Date& other)
 {
-
+    return compare(other) >= 0;
 }
 
 bool Date::operator<=(const Date& other)
 {
-
+    return compare(other) <= 0;
 }
 
 bool Date::operator>(const Date& other)
 {
-
+    return compare(other) > 0;
 }
 
 bool Date::operator<(const Date& other)
 {
-
+    return compare(other) < 0;
 }
 
 Date Date::operator+(int num)
 {
+    Date result = *this;
 
+    while (num--)
+        result = result.Tomorrow();
+
+    return result;
 }
 
 Date& Date::operator+=(int num)
 {
-
+    return *this = *this + num;
 }
 
 Date Date::operator-(int num)
 {
+    Date result = *this;
 
+    while (num--)
+        result = result.Yesterday();
+
+    return result;
 }
 
 Date& Date::operator-=(int num)
 {
-
+    return *this = *this + num;
 }
 
 Date Date::operator++(int num)
 {
+    Date result = *this;
 
+    *this = *this + 1;
+
+    return result;
 }
 
-Date Date::operator++()
+Date& Date::operator++()
 {
-
+    return *this = *this + 1;
 }
 
 Date Date::operator--(int num)
 {
+    Date result = *this;
 
+    *this = *this - 1;
+
+    return result;
 }
 
 Date Date::operator--()
 {
-
+    return *this = *this - 1;
 }
 
 Date::operator int() const
 {
-
+    return Date(year, 1, 1).calcNumOfDayBetween2Moment(*this);
 }
 
 Date::operator long() const
 {
-
+    return Date(1, 1, 1).calcNumOfDayBetween2Moment(*this);
 }

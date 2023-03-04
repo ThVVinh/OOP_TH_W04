@@ -9,12 +9,11 @@ class Date
     int year;
 
 public:
-    Date(): date(1), month(1), year(2023){}
-    constexpr Date(int _date, int _month, int _year):date(_date), month(_month), year(_year){}
-    Date(int _year);
-    Date(int _year, int _month): year(_year), month(_month){}
+    Date(): date(2), month(11), year(2012){}
+    Date(int _year): year(_year), month(1), date(1){}
+    Date(int _year, int _month): year(_year), month(_month), date(1){}
     Date(int _year, int _month, int _date): year(_year), month(_month), date(_date){}
-    Date(const Date& other){date = other.date; month = other.month; year = other.year;}
+    Date(const Date& other):date(other.date), month(other.month), year(other.year){}
 
     bool isLeapYear();
 
@@ -36,7 +35,7 @@ public:
     Date& operator-=(int num);
 
     Date operator++(int num);
-    Date operator++();
+    Date& operator++();
 
     Date operator--(int num);
     Date operator--();
@@ -52,5 +51,5 @@ public:
 
     int compare(const Date other);
 
-    int caculateNumOfDayBetween2Moment(const Date other);
+    int calcNumOfDayBetween2Moment(const Date other);
 };
