@@ -28,7 +28,7 @@ int main()
 	--d6;
 
 	cout<<d3;
-	cin>>d4;         
+	cin>>d4;
 	
 	cout<<(int)d3;			// from the first day of current year
 	

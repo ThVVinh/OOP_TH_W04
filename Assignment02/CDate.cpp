@@ -1,8 +1,8 @@
 #include"CDate.h"
 
-bool Date::isLeapYear()
+bool isLeapYear(const int _year)
 {
-    if(year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))
+    if(_year % 400 == 0 || (_year % 4 == 0 && _year % 100 != 0))
         return true;
 
     return false;
@@ -10,13 +10,13 @@ bool Date::isLeapYear()
 
 ostream& operator<< (ostream& outDevice, const Date& d)
 {
-    outDevice << d.date << "/" << d.month << "/" << d.year << endl;
+    outDevice << d.date << "/" << d.month << "/" << d.year;
 
     return outDevice;
 }
 istream& operator>> (istream& inDevice, Date& d)
 {
-    cout << "Enter Date, month and year (dd/mm/yy): ";
+    cout << "Enter date, month and year (dd/mm/yy): ";
 
     char slash = '/';
 
@@ -25,57 +25,57 @@ istream& operator>> (istream& inDevice, Date& d)
     return inDevice;
 }
 
-void Date::set(int Date, int month, int year)
+void Date::set(int _year, int _month, int _date)
 {
-    date = Date;
-    month = month;
-    year = year;
+    date = _date;
+    month = _month;
+    year = _year;
 }
 
-int Date::dayInMonth()
+int dayInMonth(const int _month, const int _year)
 {
-    if(month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
+    if(_month == 1 || _month == 3 || _month == 5 || _month == 7 || _month == 8 || _month == 10 || _month == 12)
         return 31;
-    else if(month == 2 && isLeapYear())
+    else if(_month == 2 && isLeapYear(_year))
         return 29;
-    else if(month == 2 && !isLeapYear())
+    else if(_month == 2 && isLeapYear(_year))
         return 28;
     else return 30;
 }
 
 Date Date::Tomorrow()
 {
-    if(date >= dayInMonth())
+    if(date >= dayInMonth(month, year))
     {
-        Date nextDay(1, month + 1, year);
+        Date nextDay(year, month + 1, 1);
         
-        if(month > 12)
+        if(nextDay.month > 12)
         {
-            nextDay.set(1, 1, nextDay.year + 1);
+            nextDay.set(nextDay.year + 1, 1, 1);
             return nextDay;
         }
 
         return nextDay;
     }
     
-    return Date(date + 1, month, year);
+    return Date(year, month, date + 1);
 }
 
 Date Date::Yesterday()
 {
     if(date <= 1)
     {
-        Date previousDay(30, month - 1, year);
+        Date previousDay(year,  month - 1, dayInMonth(month, year));
 
-        if(month < 1)
+        if(previousDay.month < 1)
         {
-            previousDay.set(30, 12, year - 1);
+            previousDay.set(year - 1, 12, 31);
         }
 
         return previousDay;
     }
 
-    return Date(date - 1, month, year);
+    return Date(year, month, date - 1);
 }
 
 int Date::compare(const Date other)
@@ -100,34 +100,29 @@ int Date::compare(const Date other)
         }
     }
 
-    // if(flag == 1)
-    //     cout << "Better";
-    // else if(flag == -1)
-    //     cout << "Lower";
-    // else    
-    //     cout << "Equal";
-
     return flag;
 }
 
 int Date::calcNumOfDayBetween2Moment(const Date other)
 {
-    Date temp = *this;
+    long int n1 = date + 365 * year;
 
-    int day = 0;
+    for(int i = 1; i < month; i++)
+        n1 += dayInMonth(i, year);
+    
+    for(int i = 1; i < year; i++)
+        n1 += isLeapYear(i);
 
-    while(this->compare(other) != 0)
-    {
-        if(this->compare(other) < 0)
-            *this = Tomorrow();
-        else *this = Yesterday();
-        
-        day++;
-    }
 
-    *this = temp;
+    long int n2 = other.date + 365 * other.year;
 
-    return day;
+    for(int i = 1; i < other.month; i++)
+        n2 += dayInMonth(i, other.year);
+    
+    for(int i = 1; i < other.year; i++)
+        n2 += isLeapYear(i);
+
+    return n2 - n1;
 }
 
 bool Date::operator==(const Date& other)

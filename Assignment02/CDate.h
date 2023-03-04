@@ -15,9 +15,9 @@ public:
     Date(int _year, int _month, int _date): year(_year), month(_month), date(_date){}
     Date(const Date& other):date(other.date), month(other.month), year(other.year){}
 
-    bool isLeapYear();
+    friend bool isLeapYear(const int _year);
 
-    int dayInMonth();
+    friend int dayInMonth(const int _month, const int _year);
 
     friend ostream& operator<< (ostream& outDevice, const Date& d);
     friend istream& operator>> (istream& inDevice, Date& d);
@@ -44,7 +44,7 @@ public:
     operator long() const;
 
 
-    void set(int Date, int month, int year);
+    void set(int _year, int _month, int _day);
 
     Date Tomorrow();
     Date Yesterday();
