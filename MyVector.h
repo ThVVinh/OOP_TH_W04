@@ -65,7 +65,7 @@ public:
         return arr[index];
     }
 
-    int getSize()
+    int getSize() const
     {
         return size;
     }
@@ -150,7 +150,7 @@ public:
 
     bool equals(const MyVector &v)
     {
-        if(size != v.size())
+        if(size != v.getSize())
             return false;
         
         for(int i = 0; i < size; i++)
@@ -186,11 +186,14 @@ public:
 
     void insert(T value, int index)
     {
-        add(value);
-
-        for(int i = size - 1; i > index; i--)
+        if(accessValid(index))
         {
-            swap(i, i - 1);
+            add(value);
+
+            for(int i = size - 1; i > index; i--)
+            {
+                swap(i, i - 1);
+            }
         }
     }
 
@@ -219,36 +222,42 @@ public:
         return outDev;
     }
 
+    bool accessValid(int index)
+    {
+        if(index >= size || index <= 0)
+        {
+            cout << "Invalid" << endl;
+            return 0;
+        }
+
+        return true;
+    }
+
     void remove(T value)
     {
-        int n = 0;
-
         for(int i = 0; i < size; i++)
         {
-            if(arr[i] != value)
-                ++n;
+            if(arr[i] == value)
+            {
+                moveFromIndexToEnd(i);
+
+                removeLast();
+
+                --i; //phan tu cuoi bi doi vao index = value
+            }
         }
-
-        T* temp = arr;
-
-        arr = new T[n];
-
-        for(int i = 0; i < n; i++)
-        {
-            if(temp[i] != value)
-                arr[i] = temp[i];
-        }
-
-        size = n;
-
-        delete[]temp;
-        
     }
 
     void removeAt(int index)
     {
-        for(int i = index; i < size - 1; i++)
-            swap(i, i+1);
+        if(!accessValid(index))
+        {
+            return;
+        }
+
+        moveFromIndexToEnd(index);
+
+        removeLast();
     }
 
     void removeLast()
@@ -264,6 +273,19 @@ public:
 
         arr = new_arr;
         size= new_size;
+    }
+
+    void moveFromIndexToEnd(int index)
+    {
+        if(!accessValid(index))
+        {
+            return;
+        }
+
+        for(int i = index; i < size - 1; i++)
+        {
+            swap(i, i + 1);
+        }
     }
 
     void reverse()
@@ -344,7 +366,7 @@ public:
 
     ~Fraction()
     {
-        cout << "Call Destructor of " << *this << endl; 
+        //cout << "Call Destructor of " << *this << endl; 
     }
 
 
@@ -373,5 +395,25 @@ public:
         denominator = other.denominator;
 
         return *this;
+    }
+
+    float operator-(const Fraction& other)
+    {
+        return 1.0 * ((numerator * other.denominator) - (denominator * other.numerator)) / (other.denominator * denominator);
+    }
+
+    bool operator==(const Fraction& other)
+    {
+        return *this - other == 0;
+    }
+
+    bool operator>(const Fraction& other)
+    {
+        return *this - other > 0;    
+    }
+
+    bool operator!=(const Fraction& other)
+    {
+        return *this - other != 0;
     }
 };
